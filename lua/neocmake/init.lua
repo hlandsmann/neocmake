@@ -1,4 +1,5 @@
-local cmake_presets = require'neocmake.cmake_presets'
+local cmake_presets = require 'neocmake.cmake_presets'
+local telescope_select = require 'neocmake.telescope_select'
 NeoCMake = {
   terminal = nil,
   selected_build_preset = nil,
@@ -9,7 +10,8 @@ NeoCMake = {
 NeoCMake.new = function(workspace_dir)
   local self = NeoCMake
   self.workspace_dir = workspace_dir or vim.fn.getcwd()
-  self.configurePresets = cmake_presets.get_cmake_presets(self.workspace_dir)
+  -- vim.notify("set cmake presets from " .. self.workspace_dir, "info")
+  self.configurePresets = cmake_presets.get_configurePresets (self.workspace_dir)
   return self
 end
 
@@ -34,9 +36,12 @@ end
 function NeoCMake.select_build_preset()
   local self = NeoCMake.get()
   if self.workspace_dir == nil then
-    print("hello neocmake")
+    -- print("hello neocmake")
   else
-    print("neocmake from " .. self.workspace_dir)
+    vim.notify("neocmake from " .. self.workspace_dir, "info")
+    telescope_select.cmake_build_presets(function(choice)
+      print("choice " .. choice.name)
+    end, self.configurePresets)
   end
 end
 

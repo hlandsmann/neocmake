@@ -6,7 +6,7 @@ local pickers = require "telescope.pickers"
 
 local telescope_select = {}
 
-telescope_select.choice = function(title, choice, lambda_apply, opts)
+telescope_select.choose = function(title, choice, lambda_apply, opts)
   opts = opts or {}
   pickers.new(opts, {
     prompt_title = title,
@@ -27,12 +27,12 @@ telescope_select.choice = function(title, choice, lambda_apply, opts)
 end
 
 telescope_select.cmake_build_presets = function(lambda_apply, configurePresets)
-  local choice = {}
+  local choices = {}
 
   for i, v in pairs(configurePresets) do
-    choice[i] = v.name
+    choices[i] = v.name
   end
-  telescope_select.select_build_mode("select build presets", choice,
+  telescope_select.choose("select build presets", choices,
     function(name)
       for _, v in pairs(configurePresets) do
         if name == v.name then lambda_apply(v) end

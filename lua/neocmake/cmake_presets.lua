@@ -3,15 +3,15 @@ local cmake_presets = {}
 
 cmake_presets.get_filename = function(workspace_dir)
   local user_presets_fn = workspace_dir .. "/CMakeUserPresets.json"
-  local presets_fn = vim.fn.getcwd() .. "/CMakePresets.json"
+  local presets_fn = workspace_dir .. "/CMakePresets.json"
   if util.file_exists(user_presets_fn) then
     return user_presets_fn
-  elseif util.file_exists(presets_fn) then
-    return presets_fn
-  else
-    print("CMake[User]Presets" .. " does not exist!")
-    return nil
   end
+  if util.file_exists(presets_fn) then
+    return presets_fn
+  end
+  vim.notify("CMake[User]Presets in: \'" .. workspace_dir .. "' does not exist!", "warn")
+  return nil
 end
 
 cmake_presets.get_cmake_presets = function(workspace_dir)

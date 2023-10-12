@@ -1,3 +1,4 @@
+vim.notify = require'notify'
 local util = {}
 
 util.file_exists = function(fname)
